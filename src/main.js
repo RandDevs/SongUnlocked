@@ -1,3 +1,4 @@
+import './style.css'
 import { store } from './store.js'
 import { ui } from './ui.js'
 import { Views } from './views.js'

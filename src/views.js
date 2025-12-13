@@ -76,7 +76,7 @@ export const Views = {
       <!-- Guitar Card -->
       <div class="bg-white rounded-3xl shadow-sm overflow-hidden flex flex-col relative group active:scale-[0.98] transition-all duration-300">
         <div class="h-32 bg-stone-200 relative">
-            <img src="/guitar-bg.png" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" alt="Guitar">
+            <img src="./guitar-bg.png" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" alt="Guitar">
             <div class="absolute bottom-4 left-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3 text-white">
                   <path fill-rule="evenodd" d="M19.952 1.651a.75.75 0 01.298.599V16.303a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.403-4.909l2.311-.66a1.5 1.5 0 00.438-.328V3.161c0-.214.072-.414.192-.587a.75.75 0 00-.32-.923c-.7-.442-1.432-.65-2.062-.65-2.344 0-4.085 2.56-4.598 6.471C10.74 3.791 9.006 1 6.649 1c-.818 0-1.57.34-2.148.913a.75.75 0 001.06 1.06c.328-.328.718-.515 1.088-.515 1.547 0 2.923 2.126 3.424 5.29H5.75a.75.75 0 00-.75.75v3.25a.75.75 0 00.75.75h4.63l.36 2.404a2.553 2.553 0 01-1.32 2.766 2.553 2.553 0 01-2.872-4.102.75.75 0 10-1.258.91A4.053 4.053 0 008.3 16.923a4.053 4.053 0 005.101-.63l.421-2.043h.428a1.5 1.5 0 011.006.39 4.053 4.053 0 102.73-5.207v-4.63c0-2.43.83-4.02 2.067-4.02.217 0 .42.048.601.12z" clip-rule="evenodd" />
@@ -118,7 +118,7 @@ export const Views = {
       <!-- Ukulele Card -->
       <div class="bg-white rounded-3xl shadow-sm overflow-hidden flex flex-col relative group active:scale-[0.98] transition-all duration-300">
         <div class="h-32 bg-stone-200 relative">
-            <img src="/ukulele-bg.png" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" alt="Ukulele">
+            <img src="./ukulele-bg.png" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" alt="Ukulele">
         </div>
         <div class="p-5">
             <div class="flex justify-between items-center mb-1">

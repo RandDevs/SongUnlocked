@@ -8,7 +8,11 @@ const ICONS = {
     guitarNav: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M19.5 3h-3v18h3V3zM3 5h3v14H3V5zm4.5 0h3v14h-3V5zm4.5 0h3v14H12V5z" /></svg>`, // Simplified abstract strings
     ukuleleNav: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 2a5 5 0 00-5 5v10a5 5 0 0010 0V7a5 5 0 00-5-5zm-1 13H9v-2h2v2zm0-4H9V9h2v2zm4 4h-2v-2h2v2zm0-4h-2V9h2v2z" /></svg>`, // Simplified ukulele shape
     check: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>`,
-    search: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>`
+    search: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>`,
+    play: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>`,
+    pause: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>`,
+    stop: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" /></svg>`,
+    scroll: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" /></svg>`
 };
 
 
@@ -258,21 +262,17 @@ export const Views = {
                         <h3 class="font-semibold text-stone-900 text-lg leading-tight mb-0.5 truncate group-hover:${themeColor} transition-colors">${song.title}</h3>
                         <p class="text-stone-500 text-sm mb-2 truncate">${song.artist}</p>
                         
-                        ${song.tags && song.tags.length > 0 ? `
                         <div class="flex flex-wrap gap-1">
-                            ${song.tags.map(tag => {
+                            ${song.tags && song.tags.length > 0 ? song.tags.map(tag => {
             const style = TAG_STYLES[tag] || TAG_STYLES.default;
             return `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold border ${style.color}">${tag}</span>`;
-        }).join('')}
+        }).join('') : `<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border bg-stone-50 text-stone-300 border-stone-100">No Tags</span>`}
                         </div>
-                        ` : ''}
                     </div>
                     
-                    ${(song.capo !== undefined && song.capo !== null && song.capo !== '') ? `
-                     <span class="flex-none text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-lg border ${song.capo == 0 ? 'bg-stone-100 text-stone-500 border-stone-200' : 'bg-emerald-100 text-emerald-700 border-emerald-200'}">
-                        ${song.capo == 0 ? 'No Capo' : `Capo ${song.capo}`}
+                    <span class="flex-none text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-lg border ${(song.capo && song.capo != 0) ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-stone-100 text-stone-500 border-stone-200'}">
+                        ${(song.capo && song.capo != 0) ? `Capo ${song.capo}` : 'No Capo'}
                      </span>
-                    ` : ''}
                 </div>
             </div>
         `).join('')}
@@ -341,7 +341,7 @@ export const Views = {
         ${song.notes ? `
         <div>
             <h3 class="text-sm font-bold text-stone-400 uppercase mb-2">Notes</h3>
-            <p class="text-stone-700 leading-relaxed whitespace-pre-line">${song.notes}</p>
+            <p class="text-stone-700 leading-relaxed whitespace-pre-wrap font-mono text-sm">${song.notes}</p>
         </div>
         ` : ''}
 
@@ -352,6 +352,46 @@ export const Views = {
             ${ICONS.check} Mark as Mastered
         </button>
         ` : ''}
+      </div>
+
+      <!-- Autoscroll Controls -->
+      <div id="autoscroll-container" class="fixed bottom-6 right-6 z-30 flex flex-col items-end gap-3 pointer-events-none">
+         <!-- Control Panel (Hidden by default) -->
+         <div id="autoscroll-panel" class="bg-white/90 backdrop-blur-md border border-stone-200 shadow-xl rounded-2xl p-4 w-64 pointer-events-auto transform translate-y-4 opacity-0 scale-95 transition-all duration-200 hidden origin-bottom-right">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-stone-500 uppercase">Autoscroll</span>
+                <button onclick="window.dispatchAppEvent('toggle-autoscroll-panel')" class="text-stone-400 hover:text-stone-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                      <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-4 mb-3">
+                <button id="autoscroll-toggle" onclick="window.dispatchAppEvent('toggle-autoscroll-state')" 
+                    class="w-12 h-12 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-200 active:scale-95 transition-all">
+                    <!-- Play Icon (Default) -->
+                    <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
+                    <!-- Pause Icon (Hidden) -->
+                    <svg id="icon-pause" class="hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>
+                </button>
+                <div class="flex-1 flex items-center gap-2 bg-stone-100 rounded-xl p-1">
+                    <button onclick="window.dispatchAppEvent('adjust-speed', {delta: -0.1})" class="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm text-stone-600 font-bold active:scale-95 transition-all hover:bg-stone-50 text-xl leading-none pb-1">
+                        -
+                    </button>
+                    <span id="speed-display" class="flex-1 text-center font-mono font-bold text-stone-700 text-sm">1.0x</span>
+                    <button onclick="window.dispatchAppEvent('adjust-speed', {delta: 0.1})" class="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm text-stone-600 font-bold active:scale-95 transition-all hover:bg-stone-50 text-xl leading-none pb-1">
+                        +
+                    </button>
+                </div>
+            </div>
+         </div>
+
+         <!-- FAB -->
+         <button onclick="window.dispatchAppEvent('toggle-autoscroll-panel')" 
+            class="pointer-events-auto w-14 h-14 bg-stone-900 text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" /></svg>
+         </button>
       </div>
     </div>
   `},
@@ -471,7 +511,7 @@ export const Views = {
         <div class="space-y-1">
             <label class="block text-xs font-bold text-stone-400 uppercase">Notes</label>
             <textarea name="notes" rows="4" 
-                class="w-full bg-white border border-stone-200 rounded-lg p-3 text-base focus:outline-none focus:border-emerald-500 placeholder-stone-300" 
+                class="w-full bg-white border border-stone-200 rounded-lg p-3 text-base font-mono focus:outline-none focus:border-emerald-500 placeholder-stone-300" 
                 placeholder="Strumming patterns, lyrics, etc.">${song.notes || ''}</textarea>
         </div>
         <div class="h-6"></div>

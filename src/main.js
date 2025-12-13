@@ -129,6 +129,72 @@ window.handleFilterChange = (type, value, element) => {
   window.applyFilters();
 }
 
+
+// Autoscroll Logic
+window.autoscrollState = {
+  interval: null,
+  speed: 1.0,
+  isActive: false
+}
+
+window.startAutoscroll = () => {
+  if (window.autoscrollState.interval) clearInterval(window.autoscrollState.interval);
+  window.autoscrollState.isActive = true;
+
+  // Update UI
+  const playIcon = document.getElementById('icon-play');
+  const pauseIcon = document.getElementById('icon-pause');
+  if (playIcon) playIcon.classList.add('hidden');
+  if (pauseIcon) pauseIcon.classList.remove('hidden');
+
+  const tick = () => {
+    window.scrollBy(0, 1);
+    // Check if bottom reached
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      window.stopAutoscroll();
+    }
+  }
+
+  // Base delay 50ms (20px/s) divided by speed factor
+  // 0.1x -> 500ms
+  // 1.0x -> 50ms
+  // 5.0x -> 10ms
+  const baseDelay = 50;
+  const delay = baseDelay / window.autoscrollState.speed;
+
+  window.autoscrollState.interval = setInterval(tick, delay);
+}
+
+window.stopAutoscroll = () => {
+  if (window.autoscrollState.interval) clearInterval(window.autoscrollState.interval);
+  window.autoscrollState.interval = null;
+  window.autoscrollState.isActive = false;
+
+  // Update UI
+  const playIcon = document.getElementById('icon-play');
+  const pauseIcon = document.getElementById('icon-pause');
+  if (playIcon) playIcon.classList.remove('hidden');
+  if (pauseIcon) pauseIcon.classList.add('hidden');
+}
+
+window.adjustSpeed = (delta) => {
+  let newSpeed = window.autoscrollState.speed + delta;
+  newSpeed = Math.round(newSpeed * 10) / 10; // Fix float precision
+
+  // Clamping
+  if (newSpeed < 0.1) newSpeed = 0.1;
+  if (newSpeed > 10.0) newSpeed = 10.0;
+
+  window.autoscrollState.speed = newSpeed;
+
+  const display = document.getElementById('speed-display');
+  if (display) display.textContent = newSpeed.toFixed(1) + 'x';
+
+  if (window.autoscrollState.isActive) {
+    window.startAutoscroll(); // Restart with new delay
+  }
+}
+
 class App {
   constructor() {
     this.init();
@@ -187,10 +253,38 @@ class App {
       }
     });
 
+    window.addEventListener('toggle-autoscroll-panel', () => {
+      const panel = document.getElementById('autoscroll-panel');
+      if (panel) {
+        if (panel.classList.contains('hidden')) {
+          panel.classList.remove('hidden');
+          // Small delay to allow display:block to apply before transition
+          requestAnimationFrame(() => {
+            panel.classList.remove('opacity-0', 'scale-95');
+          });
+        } else {
+          panel.classList.add('opacity-0', 'scale-95');
+          setTimeout(() => {
+            panel.classList.add('hidden');
+          }, 200);
+        }
+      }
+    });
+
+    window.addEventListener('toggle-autoscroll-state', () => {
+      if (window.autoscrollState.isActive) window.stopAutoscroll();
+      else window.startAutoscroll();
+    });
+
+    window.addEventListener('adjust-speed', (e) => {
+      window.adjustSpeed(e.detail.delta);
+    });
+
     this.route('home', {}, true);
   }
 
   route(screen, params = {}, replace = false) {
+    if (window.stopAutoscroll) window.stopAutoscroll();
     if (!replace) {
       window.history.pushState({ screen, params }, '', '#' + screen);
     } else {

@@ -1,7 +1,7 @@
 import './style.css'
-import { store } from './store'
-import { ui } from './ui'
-import { Views } from './views'
+import { store } from './store.js'
+import { ui } from './ui.js'
+import { Views } from './views.js'
 
 // Helper for UI events
 window.dispatchAppEvent = (name, detail) => {

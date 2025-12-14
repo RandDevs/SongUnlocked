@@ -1,4 +1,15 @@
+import { registerSW } from 'virtual:pwa-register'
 import './style.css'
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    // Show a prompt to user to refresh? 
+    // For now, just auto update since logic is complicated without UI component
+  },
+  onOfflineReady() {
+    console.log('App ready to work offline')
+  },
+})
 import { store } from './store.js'
 import { ui } from './ui.js'
 import { Views } from './views.js'

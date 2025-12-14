@@ -6,6 +6,11 @@ export default defineConfig({
     plugins: [
         VitePWA({
             registerType: 'autoUpdate',
+            includeAssets: ['favicon.svg', 'pwa-icon.png', 'guitar-bg.png', 'ukulele-bg.png'],
+            workbox: {
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+                cleanupOutdatedCaches: false
+            },
             devOptions: {
                 enabled: true
             },
@@ -16,8 +21,8 @@ export default defineConfig({
                 theme_color: '#ffffff',
                 background_color: '#ffffff',
                 display: 'standalone',
-                scope: '/',
-                start_url: '/',
+                scope: './',
+                start_url: './',
                 icons: [
                     {
                         src: 'pwa-icon.png',
